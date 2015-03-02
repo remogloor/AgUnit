@@ -2,26 +2,26 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>AgUnit</id>
-    <title></title>
-    <version>0.9.0</version>
-    <authors>Steven De Kock</authors>
+    <title>Testrunner for Silverlight projects</title>
+    <version>0.9.1</version>
+    <authors>Steven De Kock, Remo Gloor</authors>
     <owners>Steven De Kock</owners>
 	<summary>Run Silverlight unit tests, using StatLight.</summary>
     <description>
 		Run Silverlight unit tests, using StatLight.
 		
 		Supports:
-			- ReSharper 8.2
-			- Visual Studio 2010, 2012 and 2013
+			- ReSharper 9.0
+			- Visual Studio 2013 (Maybe 2010, 2012 and 2015)
 			- Silverlight 3, 4 and 5 (Silverlight 5 developer runtime is required for all versions)
 			- Test frameworks:
 				* MSTest:
 					You will need the MSTest files included with the Silverlight toolkit.
 					See http://silverlight.codeplex.com/.
-				* NUnit support
+				* NUnit support (not tested)
 					NUnit tests can be run by using the nunit-silverlight project from your Silverlight test project.
 					See http://code.google.com/p/nunit-silverlight/.
-				* xUnit support
+				* xUnit support (not tested)
 					xUnit tests can be run by using the xunitcontrib-silverlight project from your Silverlight test project.
 					You will also need to install the xUnit plugin (available on the ReSharper Extension Gallery).
 					See http://xunitcontrib.codeplex.com/.
@@ -36,16 +36,18 @@
     <copyright>Copyright 2014 AgUnit Authors</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="ReSharper" version="8.2" />
+      <dependency id="Wave" version="[1.0]" />
     </dependencies>
     <tags>resharper unittest silverlight statlight</tags>
   </metadata>
   <files>
-    <file src="..\output\AgUnit.Runner.ReSharper80.dll"
-          target="ReSharper\v8.2\plugins" />
-    <file src="..\output\AgUnit.Runner.ReSharper80.TaskRunner.dll"
-          target="ReSharper\v8.2\plugins" />
-    <file src="..\output\StatLight.Core.dll" target="ReSharper\v8.2\plugins" />
-    <file src="..\output\*.xap" target="ReSharper\v8.2\plugins" />
+    <file src="..\output\Release\AgUnit.Runner.ReSharper90.dll"
+          target="DotFiles" />
+    <file src="..\output\Release\AgUnit.Runner.ReSharper90.TaskRunner.dll"
+          target="DotFiles" />
+    <file src="..\output\Release\AgUnit.Runner.ReSharper90.MsTest12.dll"
+          target="DotFiles" />
+    <file src="..\lib\sl\StatLight\src\build\bin\Release\StatLight.Core.dll" target="DotFiles" />
+    <file src="..\lib\sl\StatLight\src\build\bin\Release\*.xap" target="DotFiles" />
   </files>
 </package>

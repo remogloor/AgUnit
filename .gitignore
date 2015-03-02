@@ -8,3 +8,5 @@ resharper.log
 TestResults/
 ClientBin/*
 install/*.nupkg
+src/packages/*/
+src/AgUnit.Runner.Resharper90/UnitTestFramework/ExtendedDebugTaskRunnerHostController.cs

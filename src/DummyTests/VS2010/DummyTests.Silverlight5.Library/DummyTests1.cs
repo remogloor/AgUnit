@@ -7,7 +7,7 @@ namespace DummyTests.Silverlight5.Library
     [TestClass]
     public class TestFixture1
     {
-        [AssemblyInitialize]
+        //[AssemblyInitialize]
         public static void AssemblyInitialize1(TestContext context)
         {
         }

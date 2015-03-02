@@ -7,6 +7,8 @@ pushd lib\sl\StatLight\
 powershell -NoProfile -Command "& { Import-Module .\psake.psm1; Invoke-psake .\default.ps1 "build-all" -framework 3.5x86 -parameters @{"build_configuration"='%Configuration%';} }"
 popd
 
-msbuild src\AgUnit.vs2012.sln /p:Configuration=%Configuration% /t:Rebuild
+msbuild src\AgUnit.vs2013.sln /p:Configuration=%Configuration% /t:Rebuild
+cd install
+call pack.bat
 
 pause
