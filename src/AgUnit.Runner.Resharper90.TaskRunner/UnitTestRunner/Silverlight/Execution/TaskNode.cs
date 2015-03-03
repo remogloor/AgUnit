@@ -57,7 +57,10 @@ namespace AgUnit.Runner.Resharper90.TaskRunner.UnitTestRunner.Silverlight.Execut
 
                 Status = TaskStatus.Running;
 
-                Environment.Server.TaskStarting(Task);                
+                if (!(Task is SilverlightTask))
+                {
+                    Environment.Server.TaskStarting(Task);                                    
+                }
             }
         }
 
@@ -75,7 +78,10 @@ namespace AgUnit.Runner.Resharper90.TaskRunner.UnitTestRunner.Silverlight.Execut
                     child.NotifyFinished(null, TaskResult.Skipped);
                 }
 
-                Environment.Server.TaskFinished(Task, output, Result);
+                if (!(Task is SilverlightTask))
+                {
+                    Environment.Server.TaskFinished(Task, output, Result);
+                }
 
                 if (Parent != null && Parent.Children.All(c => c.Status == TaskStatus.Finished))
                 {
@@ -88,7 +94,10 @@ namespace AgUnit.Runner.Resharper90.TaskRunner.UnitTestRunner.Silverlight.Execut
         {
             NotifyStarting();
 
-            Environment.Server.TaskException(Task, new[] { new TaskException(e) });
+            if (!(Task is SilverlightTask))
+            {
+                Environment.Server.TaskException(Task, new[] { new TaskException(e) });
+            }
 
             NotifyFinished(e.Message, result);
         }
@@ -99,7 +108,10 @@ namespace AgUnit.Runner.Resharper90.TaskRunner.UnitTestRunner.Silverlight.Execut
 
             // TODO: We should pass the TypeName instead of FullMessage
             // TODO: Report inner exceptions recursively
-            Environment.Server.TaskException(Task, new[] { new TaskException(e.FullMessage, e.Message, e.StackTrace) });
+            if (!(Task is SilverlightTask))
+            {
+                Environment.Server.TaskException(Task, new[] { new TaskException(e.FullMessage, e.Message, e.StackTrace) });
+            }
 
             NotifyFinished(e.Message, result);
         }
