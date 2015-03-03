@@ -17,8 +17,17 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
         {
             var hostProviders = GetHostProviders();
 
-            Wrap<ProcessHostProvider>(hostProviders, p => new HostProviderWrapper<ProcessHostProvider>(p));
-            Wrap<DebugHostProvider>(hostProviders, p => new ExtendedDebugHostProvider(p));
+            var providers = new List<string>();
+            providers.AddRange(Wrap<ProcessHostProvider>(hostProviders, p => new HostProviderWrapper<ProcessHostProvider>(p)));
+            providers.AddRange(Wrap<DebugHostProvider>(hostProviders, p => new ExtendedDebugHostProvider(p)));
+
+            IDictionary<string, IHostProviderDescriptor> descriptors = UnitTestHost.Instance.GetProviderDescriptors().ToDictionary(d => d.Provider.ID, d => d);
+            foreach (var provider in providers)
+            {
+                descriptors[provider] = new HostProviderDescriptorWrapper(UnitTestHost.Instance.GetProvider(provider), descriptors[provider]);
+            }
+
+            UnitTestHost.Instance.SetField("myHostProviderDescriptors", descriptors.Values.ToArray());
         }
 
         private static IDictionary<string, IHostProvider> GetHostProviders()
@@ -29,7 +38,7 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
             return hostProviders;
         }
 
-        private static void Wrap<THostProvider>(IDictionary<string, IHostProvider> hostProviders, Func<THostProvider, HostProviderWrapper<THostProvider>> createWrapper)
+        private static IEnumerable<string> Wrap<THostProvider>(IDictionary<string, IHostProvider> hostProviders, Func<THostProvider, HostProviderWrapper<THostProvider>> createWrapper)
             where THostProvider : IHostProvider
         {
             foreach (var hostProvider in hostProviders.ToList())
@@ -37,6 +46,7 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
                 if (hostProvider.Value is THostProvider)
                 {
                     hostProviders[hostProvider.Key] = createWrapper((THostProvider)hostProvider.Value);
+                    yield return hostProvider.Key;
                 }
             }
         }
