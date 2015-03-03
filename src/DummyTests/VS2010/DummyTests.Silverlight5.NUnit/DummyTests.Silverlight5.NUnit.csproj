@@ -5,24 +5,24 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{50D495DE-3537-4A78-9152-5F965DCC1B94}</ProjectGuid>
+    <ProjectGuid>{2D935DC6-C397-414D-87BB-22D77068340E}</ProjectGuid>
     <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DummyTests.Silverlight4.XUnit</RootNamespace>
-    <AssemblyName>DummyTests.Silverlight4.XUnit</AssemblyName>
+    <RootNamespace>DummyTests.Silverlight5.NUnit</RootNamespace>
+    <AssemblyName>DummyTests.Silverlight5.NUnit</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>true</SilverlightApplication>
     <SupportedCultures>
     </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>DummyTests.Silverlight4.XUnit.xap</XapFilename>
+    <XapFilename>DummyTests.Silverlight5.NUnit.xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-    <SilverlightAppEntry>DummyTests.Silverlight4.XUnit.App</SilverlightAppEntry>
-    <TestPageFileName>DummyTests.Silverlight4.XUnitTestPage.html</TestPageFileName>
+    <SilverlightAppEntry>DummyTests.Silverlight5.NUnit.App</SilverlightAppEntry>
+    <TestPageFileName>DummyTests.Silverlight5.NUnitTestPage.html</TestPageFileName>
     <CreateTestPage>true</CreateTestPage>
     <ValidateXaml>true</ValidateXaml>
     <EnableOutOfBrowser>false</EnableOutOfBrowser>
@@ -66,28 +66,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Silverlight.Testing">
-      <HintPath>..\..\..\..\lib\sl\xunitcontrib-silverlight\MicrosoftSilverlightTesting-04-2010-SL4\Microsoft.Silverlight.Testing.dll</HintPath>
+    <Reference Include="Microsoft.Silverlight.Testing, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\lib\sl\NUnit\Silverlight4-NUnit2.5.8-Apr2010\Microsoft.Silverlight.Testing.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight">
-      <HintPath>..\..\..\..\lib\sl\xunitcontrib-silverlight\MicrosoftSilverlightTesting-04-2010-SL4\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\lib\sl\NUnit\Silverlight4-NUnit2.5.8-Apr2010\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="NUnit.Silverlight.Compatibility, Version=2010.11.1.0, Culture=neutral, PublicKeyToken=fe50801526d50c78, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\lib\sl\NUnit\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Compatibility.dll</HintPath>
+    </Reference>
+    <Reference Include="NUnit.Silverlight.Framework, Version=2010.11.1.0, Culture=neutral, PublicKeyToken=fe50801526d50c78, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\lib\sl\NUnit\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="NUnit.Silverlight.Metadata, Version=2010.11.1.0, Culture=neutral, PublicKeyToken=fe50801526d50c78, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\lib\sl\NUnit\Silverlight4-NUnit2.5.8-Apr2010\NUnit.Silverlight.Metadata.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Windows.Browser" />
-    <Reference Include="xunit-silverlight4">
-      <HintPath>..\..\..\..\lib\sl\xunitcontrib-silverlight\Silverlight4\xunit-silverlight4.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.extensions-silverlight4">
-      <HintPath>..\..\..\..\lib\sl\xunitcontrib-silverlight\Silverlight4\xunit.extensions-silverlight4.dll</HintPath>
-    </Reference>
-    <Reference Include="xunitcontrib.runner.silverlight.toolkit-sl4">
-      <HintPath>..\..\..\..\lib\sl\xunitcontrib-silverlight\Silverlight4\xunitcontrib.runner.silverlight.toolkit-sl4.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -95,7 +95,8 @@
     </Compile>
     <Compile Include="DummyTests1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Silverlight4RuntimeVersionTests.cs" />
+    <Compile Include="Silverlight5RuntimeVersionTests.cs" />
+    <Compile Include="SilverlightTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

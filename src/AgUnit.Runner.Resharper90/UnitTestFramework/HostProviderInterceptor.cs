@@ -17,7 +17,7 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
         {
             var hostProviders = GetHostProviders();
 
-            // Wrap<ProcessHostProvider>(hostProviders, p => new HostProviderWrapper<ProcessHostProvider>(p));
+            Wrap<ProcessHostProvider>(hostProviders, p => new HostProviderWrapper<ProcessHostProvider>(p));
             Wrap<DebugHostProvider>(hostProviders, p => new ExtendedDebugHostProvider(p));
         }
 
