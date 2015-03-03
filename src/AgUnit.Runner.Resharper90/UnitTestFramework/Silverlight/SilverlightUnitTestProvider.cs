@@ -15,7 +15,7 @@
     public class SilverlightUnitTestProvider : IUnitTestProvider
     {
         public const string RunnerId = "Silverlight";
-        public const string RunnerTypeName = "XunitContrib.Runner.ReSharper.RemoteRunner.SilverlightUnitTestTaskRunner";
+        public const string RunnerTypeName = "AgUnit.Runner.Resharper90.TaskRunner.UnitTestRunner.Silverlight.SilverlightUnitTestTaskRunner";
 
         private static string GetRunnerCodeBase()
         {
