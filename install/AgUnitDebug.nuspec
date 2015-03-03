@@ -41,15 +41,15 @@
     <tags>resharper unittest silverlight statlight</tags>
   </metadata>
   <files>
-    <file src="..\output\Release\AgUnit.Runner.ReSharper90.dll"
+    <file src="..\output\Debug\AgUnit.Runner.ReSharper90.dll"
           target="DotFiles" />
-    <file src="..\output\Release\AgUnit.Runner.ReSharper90.TaskRunner.dll"
+    <file src="..\output\Debug\AgUnit.Runner.ReSharper90.TaskRunner.dll"
           target="DotFiles" />
-    <file src="..\output\Release\AgUnit.Runner.ReSharper90.MsTest11.dll"
+    <file src="..\output\Debug\AgUnit.Runner.ReSharper90.MsTest11.dll"
           target="DotFiles" />
-    <file src="..\output\Release\AgUnit.Runner.ReSharper90.MsTest12.dll"
+    <file src="..\output\Debug\AgUnit.Runner.ReSharper90.MsTest12.dll"
           target="DotFiles" />
-    <file src="..\output\Release\AgUnit.Runner.ReSharper90.MsTest14.dll"
+    <file src="..\output\Debug\AgUnit.Runner.ReSharper90.MsTest14.dll"
           target="DotFiles" />
     <file src="..\lib\sl\StatLight\src\build\bin\Release\StatLight.Core.dll" target="DotFiles" />
     <file src="..\lib\sl\StatLight\src\build\bin\Release\*.xap" target="DotFiles" />

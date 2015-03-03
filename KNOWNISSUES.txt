@@ -1,4 +1,6 @@
 - Silverlight plattform version is not correctly choosen
 - Bulb Action debug doesn't start in debug mode
 - Runner does not complete automatically - needs to be stopped
-- No VS2010, 2012, 2015 support
+- No VS2010 support
+- No VS2012 support
+- NO VS2015 support
