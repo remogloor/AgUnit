@@ -5,12 +5,11 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
     using JetBrains.ProjectModel;
     using JetBrains.ReSharper.UnitTestFramework;
 
-    public class HostProviderWrapper<TWrappedHostProvider> : IHostProvider
-        where TWrappedHostProvider : IHostProvider
+    public class HostProviderWrapper : IHostProvider
     {
-        public TWrappedHostProvider WrappedHostProvider { get; private set; }
+        public IHostProvider WrappedHostProvider { get; private set; }
 
-        public HostProviderWrapper(TWrappedHostProvider wrappedHostProvider)
+        public HostProviderWrapper(IHostProvider wrappedHostProvider)
         {
             this.WrappedHostProvider = wrappedHostProvider;
         }
@@ -35,12 +34,12 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
             get { return this.WrappedHostProvider.ID; }
         }
 
-        public bool Available()
+        public HostProviderAvailability Available()
         {
             return this.WrappedHostProvider.Available();
         }
 
-        public bool Available(IUnitTestElement element)
+        public HostProviderAvailability Available(IUnitTestElement element)
         {
             return this.WrappedHostProvider.Available(element);
         }

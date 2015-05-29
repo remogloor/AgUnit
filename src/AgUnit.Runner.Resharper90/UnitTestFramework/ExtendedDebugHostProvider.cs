@@ -11,14 +11,14 @@
     using JetBrains.Threading;
     using JetBrains.Util;
 
-    public class ExtendedDebugHostProvider : HostProviderWrapper<DebugHostProvider>
+    public class ExtendedDebugHostProvider : HostProviderWrapper
     {
         private readonly IVsDebuggerFacade debugger2;
         private readonly DTE dte;
         private readonly IThreading threading;
         private readonly ILogger logger;
 
-        public ExtendedDebugHostProvider(DebugHostProvider wrappedHostProvider)
+        public ExtendedDebugHostProvider(IHostProvider wrappedHostProvider)
             : base(wrappedHostProvider)
         {
             this.debugger2 = wrappedHostProvider.GetField<IVsDebuggerFacade>("myDebuggerFacade");

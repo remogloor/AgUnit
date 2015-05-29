@@ -18,8 +18,9 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
             var hostProviders = GetHostProviders();
 
             var providers = new List<string>();
-            providers.AddRange(Wrap<ProcessHostProvider>(hostProviders, p => new HostProviderWrapper<ProcessHostProvider>(p)));
-            providers.AddRange(Wrap<DebugHostProvider>(hostProviders, p => new ExtendedDebugHostProvider(p)));
+            providers.AddRange(Wrap(hostProviders, p => new HostProviderWrapper(p), p => p is ProcessHostProvider));
+            providers.AddRange(Wrap(hostProviders, p => new ExtendedDebugHostProvider(p), p => p is DebugHostProvider));
+            providers.AddRange(Wrap(hostProviders, p => new HostProviderWrapper(p), p => p.GetType().Name == "CoverageHostProvider"));
 
             IDictionary<string, IHostProviderDescriptor> descriptors = UnitTestHost.Instance.GetProviderDescriptors().ToDictionary(d => d.Provider.ID, d => d);
             foreach (var provider in providers)
@@ -27,7 +28,7 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
                 descriptors[provider] = new HostProviderDescriptorWrapper(UnitTestHost.Instance.GetProvider(provider), descriptors[provider]);
             }
 
-            UnitTestHost.Instance.SetField("myHostProviderDescriptors", descriptors.Values.ToArray());
+            UnitTestHost.Instance.SetField("myHostProviderDescriptors", Enumerable.ToArray(descriptors.Values));
         }
 
         private static IDictionary<string, IHostProvider> GetHostProviders()
@@ -38,14 +39,13 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
             return hostProviders;
         }
 
-        private static IEnumerable<string> Wrap<THostProvider>(IDictionary<string, IHostProvider> hostProviders, Func<THostProvider, HostProviderWrapper<THostProvider>> createWrapper)
-            where THostProvider : IHostProvider
+        private static IEnumerable<string> Wrap(IDictionary<string, IHostProvider> hostProviders, Func<IHostProvider, HostProviderWrapper> createWrapper, Predicate<IHostProvider> doWrap)
         {
             foreach (var hostProvider in hostProviders.ToList())
             {
-                if (hostProvider.Value is THostProvider)
+                if (doWrap(hostProvider.Value))
                 {
-                    hostProviders[hostProvider.Key] = createWrapper((THostProvider)hostProvider.Value);
+                    hostProviders[hostProvider.Key] = createWrapper(hostProvider.Value);
                     yield return hostProvider.Key;
                 }
             }

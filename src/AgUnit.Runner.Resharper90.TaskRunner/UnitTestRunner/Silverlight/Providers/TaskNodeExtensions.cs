@@ -9,7 +9,7 @@
     {
         public static IEnumerable<SilverlightTask> GetSilverlightTasks(this TaskNode node)
         {
-            if (node.Task is SilverlightUnitTestTask)
+            if (node.Task is SilverlightUnitTestAssemblyTask)
             {
                 yield return new SilverlightTask(node);
             }

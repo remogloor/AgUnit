@@ -35,44 +35,33 @@
 
         public static void AddTaskSequence(this IUnitTestRun run, RemoteTaskPacket sequence, SilverlightUnitTestElement silverlightElement, IUnitTestRun originalRun)
         {
-            var runTasks = run.GetField<Dictionary<IUnitTestElement, RemoteTask>>("myElementsToTasks");
-            var runTaskIdsToElements = run.GetField<Dictionary<string, IUnitTestElement>>("myTaskIdsToElements");
-            var runElementsToTasks = run.GetField<Dictionary<IUnitTestElement, RemoteTask>>("myElementsToTasks");
+            var runTasks = originalRun.GetField<Dictionary<IUnitTestElement, RemoteTask>>("myElementsToTasks");
+            var runTaskIdsToElements = originalRun.GetField<Dictionary<string, IUnitTestElement>>("myTaskIdsToElements");
 
-            if (runTasks == null)
-            {
-                runTasks = new Dictionary<IUnitTestElement, RemoteTask>();
-                run.SetField("myElementsToTasks", runTasks);
-            }
-
-            if (runTaskIdsToElements == null)
-            {
-                runTaskIdsToElements = new Dictionary<string, IUnitTestElement>();
-                run.SetField("myTaskIdsToElements", runTaskIdsToElements);
-            }
-
-            if (runElementsToTasks == null)
-            {
-                runElementsToTasks = new Dictionary<IUnitTestElement, RemoteTask>();
-                run.SetField("myElementsToTasks", runElementsToTasks);
-            }
-
-            foreach (var unitTestTask in sequence.GetAllTasksRecursive())
-            {
-                var element = originalRun.GetElementByRemoteTaskId(unitTestTask.Task.Id);
-
-                if (element != null)
-                {
-                    runTasks[element] = unitTestTask.Task;
-                    runTaskIdsToElements[unitTestTask.Task.Id] = element;
-                    runElementsToTasks[element] = unitTestTask.Task;
-                }
-            }
+            run.SetField("myElementsToTasks", runTasks);
+            run.SetField("myTaskIdsToElements", runTaskIdsToElements);
 
             run.GetRootTasks().Add(sequence);
             runTasks[silverlightElement] = sequence.Task;
             runTaskIdsToElements[sequence.Task.Id] = silverlightElement;
-            runElementsToTasks[silverlightElement] = sequence.Task;
+        }
+
+        public static void AddTaskSequence(this IUnitTestRun run, RemoteTaskPacket sequence, IUnitTestRun originalRun)
+        {
+            var runTasks = run.GetField<Dictionary<IUnitTestElement, RemoteTask>>("myElementsToTasks");
+            var runTaskIdsToElements = run.GetField<Dictionary<string, IUnitTestElement>>("myTaskIdsToElements");
+            var originalRunTasks = originalRun.GetField<Dictionary<IUnitTestElement, RemoteTask>>("myElementsToTasks");
+            var originalRunTaskIdsToElements = originalRun.GetField<Dictionary<string, IUnitTestElement>>("myTaskIdsToElements");
+
+            foreach (var originalRunTask in originalRunTasks)
+            {
+                runTasks[originalRunTask.Key] = originalRunTask.Value;
+            }
+
+            foreach (var originalRunTaskIdsToElement in originalRunTaskIdsToElements)
+            {
+                runTaskIdsToElements[originalRunTaskIdsToElement.Key] = originalRunTaskIdsToElement.Value;
+            }
         }
     }
 }

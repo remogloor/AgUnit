@@ -1,6 +1,6 @@
 ﻿#if NO_SUPPORT_DEBUG
 
-namespace AgUnit.Runner.Resharper80.UnitTestFramework
+namespace AgUnit.Runner.Resharper90.UnitTestFramework
 {
     using EnvDTE;
 

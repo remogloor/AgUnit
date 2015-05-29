@@ -18,9 +18,9 @@ namespace AgUnit.Runner.Resharper90.TaskRunner.UnitTestRunner.Silverlight.Execut
             Node.Execute(execute, this);
         }
 
-        private SilverlightUnitTestTask GetTask()
+        private SilverlightUnitTestAssemblyTask GetTask()
         {
-            return (SilverlightUnitTestTask)Node.Task;
+            return (SilverlightUnitTestAssemblyTask)Node.Task;
         }
 
         public bool HasXapPath()

@@ -1,9 +1,12 @@
 ﻿namespace AgUnit.Runner.Resharper90.UnitTestFramework.Silverlight
 {
+    using System;
     using System.Collections.Generic;
+    using System.Xml;
 
     using JetBrains.ProjectModel;
     using JetBrains.ReSharper.Psi;
+    using JetBrains.ReSharper.TaskRunnerFramework;
     using JetBrains.ReSharper.UnitTestFramework;
     using JetBrains.ReSharper.UnitTestFramework.Strategy;
 

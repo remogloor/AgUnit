@@ -31,17 +31,12 @@
             return new RuntimeEnvironment { PlatformType = PlatformType.x86, PlatformVersion = PlatformVersion.v4_0 };
         }
 
-        public void Run(
-            Lifetime lifetime,
-            ITaskRunnerHostController runController,
-            IUnitTestRun run,
-            IUnitTestLaunch launch,
-            Action continuation)
+        public void Run(Lifetime lifetime, ITaskRunnerHostController runController, IUnitTestRun run, IUnitTestLaunch launch)
         {
             launch.EnsureSilverlightPlatformSupport(ref run, this.provider, runController);
 
             this.strategy = new OutOfProcessUnitTestRunStrategy(SilverlightUnitTestProvider.GetTaskRunnerInfo(launch));
-            this.strategy.Run(lifetime, runController, run, launch, continuation);
+            this.strategy.Run(lifetime, runController, run, launch);
         }
 
         public void Cancel(ITaskRunnerHostController runController, IUnitTestRun run)

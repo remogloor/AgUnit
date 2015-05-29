@@ -29,6 +29,11 @@
             return this.wrappedServices.GetRunConfigurationFilename(launch);
         }
 
+        public bool IsLegacyRunConfiguration(string runConfigurationFilename)
+        {
+            return this.wrappedServices.IsLegacyRunConfiguration(runConfigurationFilename);
+        }
+
         public IUnitTestProvider Provider
         {
             get

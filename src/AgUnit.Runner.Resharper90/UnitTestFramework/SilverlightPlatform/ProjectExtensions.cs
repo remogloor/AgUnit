@@ -3,6 +3,7 @@
     using System;
     using System.Linq;
 
+    using JetBrains.Metadata.Reader.API;
     using JetBrains.ProjectModel;
     using JetBrains.VsIntegration.ProjectDocuments.Projects.Builder;
     
@@ -44,7 +45,7 @@
 
         public static bool IsSilverlight(this IProject project)
         {
-            return project.GetAssemblyReferences().Any(r => r.Name == SilverlightMsTestAssemblyName);
+            return project.GetAssemblyReferences(project.TargetFrameworkIds.First()).Any(r => r.Name == SilverlightMsTestAssemblyName);
         }
     }
 }
