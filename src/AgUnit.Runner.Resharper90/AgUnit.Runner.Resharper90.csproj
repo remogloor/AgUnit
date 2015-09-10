@@ -161,7 +161,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTestFramework\ExtendedDebugTaskRunnerHostController2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTestFramework\ExtendedDebugHostProvider.cs" />
     <Compile Include="UnitTestFramework\ExtendedDebugTaskRunnerHostController.cs" />
