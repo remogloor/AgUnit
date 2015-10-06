@@ -15,7 +15,7 @@
     using JetBrains.ReSharper.UnitTestProvider.MSTest;
     using JetBrains.ReSharper.UnitTestProvider.MSTest11;
     using JetBrains.Util;
-
+/*
     using MsTestElementsSource = JetBrains.ReSharper.UnitTestProvider.MSTest11.MsTestElementsSource;
     using MsTestProvider = JetBrains.ReSharper.UnitTestProvider.MSTest11.MsTestProvider;
 
@@ -54,5 +54,5 @@
                 this.wrappedElementsSource.ExploreFile(psiFile, observer, interrupted);
             }
         }
-    }
+    }*/
 }

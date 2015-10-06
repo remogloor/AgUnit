@@ -11,12 +11,13 @@
         private readonly IUnitTestProvider silverlightUnitTestProvider;
         private readonly IMsTestServices wrappedServices;
         private readonly SilverlightRunStrategy runStrategy;
+        private readonly IUnitTestElementIdFactory unitTestElementIdFactory;
 
         public SilverlightServices(IMsTestServices wrappedServices, IUnitTestProvider silverlightUnitTestProvider)
         {
             this.silverlightUnitTestProvider = silverlightUnitTestProvider;
             this.wrappedServices = wrappedServices;
-            this.runStrategy = new SilverlightRunStrategy(this.silverlightUnitTestProvider);
+            this.runStrategy = new SilverlightRunStrategy(this.silverlightUnitTestProvider, unitTestElementIdFactory);
         }
 
         public IUnitTestRunStrategy GetRunStrategy(IHostProvider hostProvider, IUnitTestElement element)
@@ -71,6 +72,14 @@
             get
             {
                 return this.wrappedServices.CategoryFactory;
+            }
+        }
+
+        public UnitTestingCachingService CachingService
+        {
+            get
+            {
+                return this.wrappedServices.CachingService;                
             }
         }
 

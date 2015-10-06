@@ -3,7 +3,7 @@
   <metadata>
     <id>AgUnitProject.AgUnit</id>
     <title>Testrunner for Silverlight projects</title>
-    <version>0.9.2</version>
+    <version>0.9.3</version>
     <authors>Steven De Kock, Remo Gloor</authors>
     <owners>Steven De Kock</owners>
 	<summary>Run Silverlight unit tests, using StatLight.</summary>
@@ -11,7 +11,7 @@
 		Run Silverlight unit tests, using StatLight.
 		
 		Supports:
-			- ReSharper 9.1.1
+			- ReSharper 9.2
 			- Visual Studio 2013 (Maybe 2012 and 2015) 2010
 			- Silverlight 3, 4 and 5 (Silverlight 5 developer runtime is required for all versions)
 			- Test frameworks:
@@ -36,7 +36,7 @@
     <copyright>Copyright 2014 AgUnit Authors</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <dependencies>
-      <dependency id="Wave" version="[2.0]" />
+      <dependency id="Wave" version="[3.0]" />
     </dependencies>
     <tags>resharper unittest silverlight statlight</tags>
   </metadata>

@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DummyTests.Silverlight5
 {
+    using System.Windows;
+
     [TestClass]
     public class TestFixture1
     {
@@ -24,6 +26,8 @@ namespace DummyTests.Silverlight5
         [TestMethod]
         public void PassingTest1()
         {
+            var runtimeVersion = Deployment.Current.RuntimeVersion;
+            Assert.IsTrue(runtimeVersion.StartsWith("5."), string.Format("Runtime version was {0}, expected 5.*", runtimeVersion));
         }
 
         [TestMethod]

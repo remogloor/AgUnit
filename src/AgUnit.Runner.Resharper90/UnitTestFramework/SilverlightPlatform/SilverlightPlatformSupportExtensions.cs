@@ -12,7 +12,7 @@
 
     public static class SilverlightPlatformSupportExtensions
     {
-        public static void EnsureSilverlightPlatformSupport(this IUnitTestLaunch launch, UnitTestProviders providers, ITaskRunnerHostController hostController)
+        public static void EnsureSilverlightPlatformSupport(this IUnitTestLaunch launch, IUnitTestProviderManager providers, ITaskRunnerHostController hostController, IUnitTestElementIdFactory elementIdFactory)
         {
             var runs = launch.GetRuns();
             RemoteTaskPacket silverlightSequence = null;
@@ -27,23 +27,23 @@
                         continue;
                     }
 
-                    var provider = providers.GetProvider(SilverlightUnitTestProvider.RunnerId);
-                    ConvertToSilverlightSequenceIfNecessary(sequence, run, ref silverlightSequence, ref silverlightUnitTestRun, launch, provider, hostController);
+                    var provider = providers.GetById(SilverlightUnitTestProvider.RunnerId);
+                    ConvertToSilverlightSequenceIfNecessary(sequence, run, ref silverlightSequence, ref silverlightUnitTestRun, launch, provider, hostController, elementIdFactory);
                 }
             }
 
             launch.RemoveEmptyRuns();
         }
 
-        public static void EnsureSilverlightPlatformSupport(this IUnitTestLaunch launch, ref IUnitTestRun run, IUnitTestProvider provider, ITaskRunnerHostController hostController)
+        public static void EnsureSilverlightPlatformSupport(this IUnitTestLaunch launch, ref IUnitTestRun run, IUnitTestProvider provider, ITaskRunnerHostController hostController, IUnitTestElementIdFactory elementIdFactory)
         {
             foreach (var sequence in run.GetRootTasks().ToArray())
             {
-                ConvertToSilverlightSequenceIfNecessary(sequence, ref run, launch, provider, hostController);
+                ConvertToSilverlightSequenceIfNecessary(sequence, ref run, launch, provider, hostController, elementIdFactory);
             }
         }
 
-        private static void ConvertToSilverlightSequenceIfNecessary(RemoteTaskPacket sequence, ref IUnitTestRun run, IUnitTestLaunch launch, IUnitTestProvider provider, ITaskRunnerHostController hostController)
+        private static void ConvertToSilverlightSequenceIfNecessary(RemoteTaskPacket sequence, ref IUnitTestRun run, IUnitTestLaunch launch, IUnitTestProvider provider, ITaskRunnerHostController hostController, IUnitTestElementIdFactory elementIdFactory)
         {
             if (!sequence.IsSilverlightSequence())
             {
@@ -51,7 +51,7 @@
                 if (silverlightProject != null)
                 {
                     var silverlightRun = launch.GetOrCreateSilverlightRun(silverlightProject.PlatformID, provider, hostController);
-                    var silverlightElement = new SilverlightUnitTestElement(new UnitTestElementId(provider, run.Elements.First().Id.PersistentProjectId, Guid.NewGuid().ToString()), silverlightRun.Key.RunStrategy);
+                    var silverlightElement = new SilverlightUnitTestElement(elementIdFactory.Create(provider, run.Elements.First().Id.Project, Guid.NewGuid().ToString()), silverlightRun.Key.RunStrategy);
                     var remoteTask = new SilverlightUnitTestTask(silverlightProject.PlatformID.Version, silverlightProject.GetXapPath(), silverlightProject.GetDllPath());
 
                     var silverlightSequence = new RemoteTaskPacket(remoteTask);
@@ -67,7 +67,7 @@
             }
         }
 
-        private static void ConvertToSilverlightSequenceIfNecessary(RemoteTaskPacket sequence, IUnitTestRun run, ref RemoteTaskPacket silverlightSequence, ref IUnitTestRun silverlightUnitTestRun, IUnitTestLaunch launch, IUnitTestProvider provider, ITaskRunnerHostController hostController)
+        private static void ConvertToSilverlightSequenceIfNecessary(RemoteTaskPacket sequence, IUnitTestRun run, ref RemoteTaskPacket silverlightSequence, ref IUnitTestRun silverlightUnitTestRun, IUnitTestLaunch launch, IUnitTestProvider provider, ITaskRunnerHostController hostController, IUnitTestElementIdFactory elementIdFactory)
         {
             if (!sequence.IsSilverlightSequence())
             {
@@ -77,7 +77,7 @@
                     if (silverlightSequence == null)
                     {
                         var silverlightRun = launch.GetOrCreateSilverlightRun(silverlightProject.PlatformID, provider, hostController);
-                        var silverlightElement = new SilverlightUnitTestElement(new UnitTestElementId(provider, run.Elements.First().Id.PersistentProjectId, Guid.NewGuid().ToString()), silverlightRun.Key.RunStrategy);
+                        var silverlightElement = new SilverlightUnitTestElement(elementIdFactory.Create(provider, run.Elements.First().Id.Project, Guid.NewGuid().ToString()), silverlightRun.Key.RunStrategy);
                         var remoteTask = new SilverlightUnitTestTask(silverlightProject.PlatformID.Version, silverlightProject.GetXapPath(), silverlightProject.GetDllPath());
 
                         silverlightSequence = new RemoteTaskPacket(remoteTask);

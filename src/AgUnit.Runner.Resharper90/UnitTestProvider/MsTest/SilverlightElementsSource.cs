@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
 
     using AgUnit.Runner.Resharper90.UnitTestFramework.Silverlight;
     using AgUnit.Runner.Resharper90.UnitTestFramework.SilverlightPlatform;
@@ -57,29 +58,34 @@
         {
         }
 
-        public void ExploreProjects(IDictionary<IProject, FileSystemPath> projects, MetadataLoader loader, IUnitTestElementsObserver observer)
+        public void ExploreProjects(
+            IDictionary<IProject, FileSystemPath> projects,
+            MetadataLoader loader,
+            IUnitTestElementsObserver observer,
+            CancellationToken cancellationToken)
         {
             var silverlightProjects = projects.Where(p => p.Key.IsSilverlight()).ToDictionary(p => p.Key, p => p.Value);
 
-            this.metadataElementsSource.ExploreProjects(silverlightProjects, loader, observer, this.ExploreAssembly);
+            this.metadataElementsSource.ExploreProjects(silverlightProjects, loader, observer, this.ExploreAssembly, cancellationToken);
             observer.OnCompleted();
         }
 
         public void ExploreFile(IFile psiFile, IUnitTestElementsObserver observer, Func<bool> interrupted)
         {
+            /*
             if (psiFile.GetProject().IsSilverlight())
             {
                 if (!string.Equals(psiFile.Language.Name, "CSHARP", StringComparison.Ordinal) && !string.Equals(psiFile.Language.Name, "VBASIC", StringComparison.Ordinal) || psiFile.GetSourceFile().ToProjectFile() == null)
                     return;
                 this.RunWithElementFactory(elementFactory => psiFile.ProcessDescendants(new MsTestFileExplorer(elementFactory, this.msTestAttributesProvider, observer, psiFile, interrupted)));
-            }
+            }*/
         }
 
-        private void ExploreAssembly(IProject project, IMetadataAssembly assembly, IUnitTestElementsObserver observer)
+        private void ExploreAssembly(IProject project, IMetadataAssembly assembly, IUnitTestElementsObserver observer, CancellationToken cancellationToken)
         {
             if (assembly.ReferencedAssembliesNames.Any(n => n.Name == SilverlightMsTestAssemblyName))
             {
-                this.RunWithElementFactory(elementFactory => new MsTestMetadataExplorer(elementFactory, this.msTestAttributesProvider, project, this.shellLocks, observer).ExploreAssembly(assembly));
+                this.RunWithElementFactory(elementFactory => new MsTestMetadataExplorer(elementFactory, this.msTestAttributesProvider, project, this.shellLocks, observer).ExploreAssembly(assembly, cancellationToken));
             }
         }
 

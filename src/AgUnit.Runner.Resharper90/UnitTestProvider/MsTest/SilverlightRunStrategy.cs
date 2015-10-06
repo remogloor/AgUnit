@@ -1,6 +1,7 @@
 ﻿namespace AgUnit.Runner.Resharper90.UnitTestProvider.MsTest
 {
     using System;
+    using System.Linq;
 
     using AgUnit.Runner.Resharper90.UnitTestFramework.Silverlight;
     using AgUnit.Runner.Resharper90.UnitTestFramework.SilverlightPlatform;
@@ -16,10 +17,12 @@
     {
         private IUnitTestRunStrategy strategy;
         private readonly IUnitTestProvider provider;
+        private readonly IUnitTestElementIdFactory unitTestElementIdFactory;
 
-        public SilverlightRunStrategy(IUnitTestProvider provider)
+        public SilverlightRunStrategy(IUnitTestProvider provider, IUnitTestElementIdFactory unitTestElementIdFactory)
         {
             this.provider = provider;
+            this.unitTestElementIdFactory = unitTestElementIdFactory;
         }
 
         public RuntimeEnvironment GetRuntimeEnvironment(
@@ -33,7 +36,7 @@
 
         public void Run(Lifetime lifetime, ITaskRunnerHostController runController, IUnitTestRun run, IUnitTestLaunch launch)
         {
-            launch.EnsureSilverlightPlatformSupport(ref run, this.provider, runController);
+            launch.EnsureSilverlightPlatformSupport(ref run, this.provider, runController, unitTestElementIdFactory);
 
             this.strategy = new OutOfProcessUnitTestRunStrategy(SilverlightUnitTestProvider.GetTaskRunnerInfo(launch));
             this.strategy.Run(lifetime, runController, run, launch);
@@ -55,6 +58,11 @@
         }
 
         public bool RequiresProjectExplorationAfterBuild(IProject project, IUnitTestElement element)
+        {
+            return false;
+        }
+
+        public bool RequiresProjectPropertiesRefreshBeforeLaunch()
         {
             return false;
         }

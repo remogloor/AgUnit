@@ -7,6 +7,7 @@
     using AgUnit.Runner.Resharper90.Util;
 
     using JetBrains.Application.platforms;
+    using JetBrains.ProjectModel;
     using JetBrains.ReSharper.TaskRunnerFramework;
     using JetBrains.ReSharper.UnitTestExplorer.Launch;
     using JetBrains.ReSharper.UnitTestFramework;
@@ -34,7 +35,7 @@
             {
                 var runtimeEnvironment = new RuntimeEnvironment { PlatformType = PlatformType.x86, PlatformVersion = PlatformVersion.v4_0 };
 
-                var run = new UnitTestRun((UnitTestLaunch)launch, runtimeEnvironment);
+                var run = new UnitTestRun((UnitTestLaunch)launch, provider, runtimeEnvironment, runs.First().Value.Value.GetField<ISolution>("mySolution"));
                 var runStrategy = new OutOfProcessUnitTestRunStrategy(SilverlightUnitTestProvider.GetTaskRunnerInfo(launch));
 
                 var runProperties = new UnitTestRunProperties(provider, null, runStrategy, runtimeEnvironment);

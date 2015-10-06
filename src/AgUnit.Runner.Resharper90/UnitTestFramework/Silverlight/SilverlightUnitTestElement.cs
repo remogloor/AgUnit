@@ -109,7 +109,7 @@
             return this.Id;
         }
 
-        public UnitTestNamespace GetNamespace()
+        public UnitTestElementNamespace GetNamespace()
         {
             return null;
         }

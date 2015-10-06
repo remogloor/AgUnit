@@ -13,12 +13,15 @@ namespace AgUnit.Runner.Resharper90.MsTest11
     [SolutionComponent]
     public class SilverlightElementsSource : SilverlightElementsSourceBase
     {
+        private readonly IUnitTestElementIdFactory elementIdFactory;
+
         public SilverlightElementsSource(
             SilverlightUnitTestProvider provider, 
             IMsTestServices msTestServices, 
-            IMsTestAttributesProvider msTestAttributesProvider, IUnitTestElementManager unitTestElementManager, IUnitTestCategoryFactory unitTestCategoryFactory, IShellLocks shellLocks)
+            IMsTestAttributesProvider msTestAttributesProvider, IUnitTestElementManager unitTestElementManager, IUnitTestCategoryFactory unitTestCategoryFactory, IShellLocks shellLocks, IUnitTestElementIdFactory elementIdFactory)
             : base(provider, msTestServices, msTestAttributesProvider, unitTestElementManager, unitTestCategoryFactory, shellLocks)
         {
+            this.elementIdFactory = elementIdFactory;
         }
 
         protected override IMsTestElementFactory CreateMsTestElementFactory(
@@ -26,7 +29,7 @@ namespace AgUnit.Runner.Resharper90.MsTest11
             IUnitTestElementManager unitTestElementManager,
             IUnitTestCategoryFactory unitTestCategoryFactory)
         {
-            return new MsTestElementFactory(silverlightServices, unitTestElementManager, unitTestCategoryFactory);
+            return new MsTestElementFactory(silverlightServices, unitTestElementManager, unitTestCategoryFactory, this.elementIdFactory);
         }
     }
 }

@@ -18,8 +18,8 @@
         private readonly IThreading threading;
         private readonly ILogger logger;
 
-        public ExtendedDebugHostProvider(IHostProvider wrappedHostProvider)
-            : base(wrappedHostProvider)
+        public ExtendedDebugHostProvider(IHostProvider wrappedHostProvider, IUnitTestElementIdFactory elementIdFactory, IUnitTestProviderManager unitTestProviderManager)
+            : base(wrappedHostProvider, elementIdFactory, unitTestProviderManager)
         {
             this.debugger2 = wrappedHostProvider.GetField<IVsDebuggerFacade>("myDebuggerFacade");
             this.dte = wrappedHostProvider.GetField<DTE>("myDte");

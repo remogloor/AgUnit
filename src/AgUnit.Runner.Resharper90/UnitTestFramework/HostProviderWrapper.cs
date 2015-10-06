@@ -9,8 +9,14 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
     {
         public IHostProvider WrappedHostProvider { get; private set; }
 
-        public HostProviderWrapper(IHostProvider wrappedHostProvider)
+        private IUnitTestElementIdFactory elementIdFactory;
+
+        private IUnitTestProviderManager unitTestProviderManager;
+
+        public HostProviderWrapper(IHostProvider wrappedHostProvider, IUnitTestElementIdFactory elementIdFactory, IUnitTestProviderManager unitTestProviderManager)
         {
+            this.elementIdFactory = elementIdFactory;
+            this.unitTestProviderManager = unitTestProviderManager;
             this.WrappedHostProvider = wrappedHostProvider;
         }
 
@@ -23,8 +29,7 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
         {
             var hostController = this.CreateWrappedHostController(solution, launchManager, resultManager, agentManager, launch);
 
-            var providers = solution.GetComponent<UnitTestProviders>();
-            launch.EnsureSilverlightPlatformSupport(providers, hostController);
+            launch.EnsureSilverlightPlatformSupport(unitTestProviderManager, hostController, elementIdFactory);
 
             return hostController;
         }
@@ -34,14 +39,14 @@ namespace AgUnit.Runner.Resharper90.UnitTestFramework
             get { return this.WrappedHostProvider.ID; }
         }
 
-        public HostProviderAvailability Available()
+        public HostProviderAvailability GetAvailability()
         {
-            return this.WrappedHostProvider.Available();
+            return this.WrappedHostProvider.GetAvailability();
         }
 
-        public HostProviderAvailability Available(IUnitTestElement element)
+        public HostProviderAvailability GetAvailability(IUnitTestElement element)
         {
-            return this.WrappedHostProvider.Available(element);
+            return this.WrappedHostProvider.GetAvailability(element);
         }
 
         public bool SupressBuild()

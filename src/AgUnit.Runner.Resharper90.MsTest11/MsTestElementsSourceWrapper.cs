@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
 
     using AgUnit.Runner.Resharper90.UnitTestFramework.SilverlightPlatform;
 
@@ -16,6 +17,7 @@
     using JetBrains.ReSharper.UnitTestProvider.MSTest11;
     using JetBrains.Util;
 
+/*
     using MsTestElementsSource = JetBrains.ReSharper.UnitTestProvider.MSTest11.MsTestElementsSource;
     using MsTestProvider = JetBrains.ReSharper.UnitTestProvider.MSTest11.MsTestProvider;
 
@@ -41,7 +43,7 @@
             this.wrappedElementsSource.ExploreSolution(observer);
         }
 
-        public void ExploreProjects(IDictionary<IProject, FileSystemPath> projects, MetadataLoader loader, IUnitTestElementsObserver observer)
+        public void ExploreProjects(IDictionary<IProject, FileSystemPath> projects, MetadataLoader loader, IUnitTestElementsObserver observer, CancellationToken cancellationToken)
         {
             var noneSilverlightProjects = projects.Where(p => !p.Key.IsSilverlight()).ToDictionary(p => p.Key, p => p.Value);
             this.wrappedElementsSource.ExploreProjects(noneSilverlightProjects, loader, observer);
@@ -55,4 +57,5 @@
             }
         }
     }
+*/
 }
