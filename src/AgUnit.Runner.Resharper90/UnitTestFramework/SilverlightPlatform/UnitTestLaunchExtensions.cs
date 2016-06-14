@@ -51,6 +51,7 @@
                     var runProperties = new UnitTestRunProperties(provider, runStrategy, project, runtimeEnvironment);
                     runProperties.EnsureLifetime(launch);
                     silverlightRun = new UnitTestRun(runProperties, (UnitTestLaunch)launch);
+                    silverlightRun.HostController = hostController;
 
                     runs.Add(silverlightRun.Id, silverlightRun);
                 }
