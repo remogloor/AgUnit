@@ -28,7 +28,7 @@
         private readonly IMsTestServices msTestServices;
         private readonly IMsTestAttributesProvider msTestAttributesProvider;
         private readonly IUnitTestElementManager unitTestElementManager;
-        private readonly IUnitTestCategoryFactory unitTestCategoryFactory;
+        private readonly IUnitTestElementCategoryFactory unitTestCategoryFactory;
         private readonly IShellLocks shellLocks;
 
         public IUnitTestProvider Provider
@@ -42,7 +42,7 @@
             IMsTestServices msTestServices,
             IMsTestAttributesProvider msTestAttributesProvider,
             IUnitTestElementManager unitTestElementManager,
-            IUnitTestCategoryFactory unitTestCategoryFactory,
+            IUnitTestElementCategoryFactory unitTestCategoryFactory,
             IShellLocks shellLocks)
         {
             this.Provider = provider;
@@ -72,20 +72,21 @@
 
         public void ExploreFile(IFile psiFile, IUnitTestElementsObserver observer, Func<bool> interrupted)
         {
-            /*
             if (psiFile.GetProject().IsSilverlight())
             {
+                observer = new SLObserver(observer);
                 if (!string.Equals(psiFile.Language.Name, "CSHARP", StringComparison.Ordinal) && !string.Equals(psiFile.Language.Name, "VBASIC", StringComparison.Ordinal) || psiFile.GetSourceFile().ToProjectFile() == null)
                     return;
                 this.RunWithElementFactory(elementFactory => psiFile.ProcessDescendants(new MsTestFileExplorer(elementFactory, this.msTestAttributesProvider, observer, psiFile, interrupted)));
-            }*/
+            }
         }
 
         private void ExploreAssembly(IProject project, IMetadataAssembly assembly, IUnitTestElementsObserver observer, CancellationToken cancellationToken)
         {
+            observer = new SLObserver(observer);
             if (assembly.ReferencedAssembliesNames.Any(n => n.Name == SilverlightMsTestAssemblyName))
             {
-                this.RunWithElementFactory(elementFactory => new MsTestMetadataExplorer(elementFactory, this.msTestAttributesProvider, project, this.shellLocks, observer).ExploreAssembly(assembly, cancellationToken));
+                this.RunWithElementFactory(elementFactory => new MsTestMetadataExplorer(elementFactory, this.msTestAttributesProvider, observer, project).ExploreAssembly(assembly, cancellationToken));
             }
         }
 
@@ -99,6 +100,38 @@
             silverlightServices.ExplorationCompleted = true;
         }
 
-        protected abstract IMsTestElementFactory CreateMsTestElementFactory(SilverlightServices silverlightServices, IUnitTestElementManager unitTestElementManager, IUnitTestCategoryFactory unitTestCategoryFactory);
+        protected abstract IMsTestElementFactory CreateMsTestElementFactory(SilverlightServices silverlightServices, IUnitTestElementManager unitTestElementManager, IUnitTestElementCategoryFactory unitTestCategoryFactory);
+    }
+
+    public class SLObserver : IUnitTestElementsObserver
+    {
+        private readonly IUnitTestElementsObserver decoratedObserver;
+
+        public SLObserver(IUnitTestElementsObserver decoratedObserver)
+        {
+            this.decoratedObserver = decoratedObserver;
+        }
+
+        public void OnUnitTestElement(IUnitTestElement element)
+        {
+            this.decoratedObserver.OnUnitTestElement(element);
+        }
+
+        public void OnUnitTestElementDisposition(UnitTestElementDisposition disposition)
+        {
+            this.decoratedObserver.OnUnitTestElementDisposition(disposition);
+        }
+
+        public void OnUnitTestElementChanged(IUnitTestElement element)
+        {
+            this.decoratedObserver.OnUnitTestElementChanged(element);
+        }
+
+        public void OnCompleted()
+        {
+            this.decoratedObserver.OnCompleted();
+        }
+
+        public IEnumerable<UnitTestElementDisposition> Dispositions { get; private set; }
     }
 }

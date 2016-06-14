@@ -7,6 +7,7 @@
 
     using AgUnit.Runner.Resharper90.UnitTestFramework.SilverlightPlatform;
 
+    using JetBrains.ProjectModel;
     using JetBrains.ReSharper.Psi;
     using JetBrains.ReSharper.TaskRunnerFramework;
     using JetBrains.ReSharper.UnitTestFramework;
@@ -40,9 +41,10 @@
         {
             var runnerType = Assembly.LoadFrom(GetRunnerCodeBase()).GetType(RunnerTypeName);
 
-            var additionalPaths = launch.Runs.SelectMany(r => r.GetAllTasks())
-                .Select(t => t.Task.GetType().Assembly).Distinct()
-                .Where(a => !a.FullName.StartsWith("JetBrains"))
+            var allTasks = launch.Runs.SelectMany(r => r.GetAllTasks());
+            var assemblies = allTasks.Select(t => t.Task.GetType().Assembly).Distinct();
+            var additionalPaths =
+                assemblies.Where(a => !a.FullName.StartsWith("JetBrains"))
                 .Select(a => Path.GetDirectoryName(new Uri(a.CodeBase, UriKind.RelativeOrAbsolute).LocalPath))
                 .ToArray();
 
@@ -67,7 +69,12 @@
 
         public bool IsSupported(IHostProvider hostProvider)
         {
-            return true;
+            return hostProvider is HostProviderWrapper;
+        }
+
+        public bool IsSupported(IProject project)
+        {
+            return project.IsSilverlight();
         }
 
         public int CompareUnitTestElements(IUnitTestElement x, IUnitTestElement y)

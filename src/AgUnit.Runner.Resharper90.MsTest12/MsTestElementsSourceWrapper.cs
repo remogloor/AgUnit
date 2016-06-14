@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
 
     using AgUnit.Runner.Resharper90.UnitTestFramework.SilverlightPlatform;
 

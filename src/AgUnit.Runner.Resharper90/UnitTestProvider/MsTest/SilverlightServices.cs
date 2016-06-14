@@ -3,6 +3,7 @@
     using JetBrains.Application.Settings;
     using JetBrains.ProjectModel;
     using JetBrains.ReSharper.UnitTestFramework;
+    using JetBrains.ReSharper.UnitTestFramework.Elements;
     using JetBrains.ReSharper.UnitTestFramework.Strategy;
     using JetBrains.ReSharper.UnitTestProvider.MSTest;
 
@@ -67,13 +68,21 @@
             }
         }
 
-        public IUnitTestCategoryFactory CategoryFactory
+        public IUnitTestElementCategoryFactory CategoryFactory
         {
             get
             {
                 return this.wrappedServices.CategoryFactory;
             }
         }
+
+        public IUnitTestElementManager ElementManager
+        {
+            get
+            {
+                return this.wrappedServices.ElementManager;
+            }
+        } 
 
         public UnitTestingCachingService CachingService
         {

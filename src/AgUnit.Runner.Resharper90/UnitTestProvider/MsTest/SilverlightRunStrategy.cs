@@ -12,6 +12,7 @@
     using JetBrains.ReSharper.TaskRunnerFramework;
     using JetBrains.ReSharper.UnitTestFramework;
     using JetBrains.ReSharper.UnitTestFramework.Strategy;
+    using JetBrains.Util;
 
     public class SilverlightRunStrategy : IUnitTestRunStrategy
     {
@@ -29,27 +30,27 @@
             IUnitTestElement element,
             RuntimeEnvironment projectRuntimeEnvironment,
             TargetPlatform targetPlatform,
-            IUnitTestLaunch launch)
+            IUserDataHolder userData)
         {
             return new RuntimeEnvironment { PlatformType = PlatformType.x86, PlatformVersion = PlatformVersion.v4_0 };
         }
 
-        public void Run(Lifetime lifetime, ITaskRunnerHostController runController, IUnitTestRun run, IUnitTestLaunch launch)
+        public void Run(IUnitTestRun run)
         {
-            launch.EnsureSilverlightPlatformSupport(ref run, this.provider, runController, unitTestElementIdFactory);
+            run.Launch.EnsureSilverlightPlatformSupport(ref run, this.provider, run.HostController, unitTestElementIdFactory);
 
-            this.strategy = new OutOfProcessUnitTestRunStrategy(SilverlightUnitTestProvider.GetTaskRunnerInfo(launch));
-            this.strategy.Run(lifetime, runController, run, launch);
+            this.strategy = new OutOfProcessUnitTestRunStrategy(SilverlightUnitTestProvider.GetTaskRunnerInfo(run.Launch));
+            this.strategy.Run(run);
         }
 
-        public void Cancel(ITaskRunnerHostController runController, IUnitTestRun run)
+        public void Cancel(IUnitTestRun run)
         {
-            this.strategy.Cancel(runController, run);
+            this.strategy.Cancel(run);
         }
 
-        public void Abort(ITaskRunnerHostController runController, IUnitTestRun run)
+        public void Abort(IUnitTestRun run)
         {
-            this.strategy.Abort(runController, run);
+            this.strategy.Abort(run);
         }
 
         public bool RequiresProjectBuild(IProject project)

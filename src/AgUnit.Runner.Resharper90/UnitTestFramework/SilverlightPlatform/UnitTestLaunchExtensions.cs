@@ -1,57 +1,71 @@
 ﻿namespace AgUnit.Runner.Resharper90.UnitTestFramework.SilverlightPlatform
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using AgUnit.Runner.Resharper90.UnitTestFramework.Silverlight;
     using AgUnit.Runner.Resharper90.Util;
 
-    using JetBrains.Application.platforms;
     using JetBrains.ProjectModel;
     using JetBrains.ReSharper.TaskRunnerFramework;
     using JetBrains.ReSharper.UnitTestExplorer.Launch;
     using JetBrains.ReSharper.UnitTestFramework;
     using JetBrains.ReSharper.UnitTestFramework.Strategy;
 
+    using PlatformID = JetBrains.Application.platforms.PlatformID;
+
     public static class UnitTestLaunchExtensions
     {
         public static void RemoveEmptyRuns(this IUnitTestLaunch launch)
         {
             var runs = launch.GetRuns();
-            var emptyRuns = runs.Values.Select(run => run.Value).Where(run => !run.GetRootTasks().Any()).ToArray();
+            var emptyRuns = runs.Values.Where(run => !run.GetRootTasks().Any()).ToArray();
 
             foreach (var run in emptyRuns)
             {
-                runs.Remove(run.ID);
+                runs.Remove(run.Id);
             }
         }
 
-        public static KeyValuePair<UnitTestRunProperties, UnitTestRun> GetOrCreateSilverlightRun(this IUnitTestLaunch launch, PlatformID silverlightPlatform, IUnitTestProvider provider, ITaskRunnerHostController hostController)
+        public static UnitTestRun GetOrCreateSilverlightRun(this IUnitTestLaunch launch, PlatformID silverlightPlatform, IUnitTestProvider provider, ITaskRunnerHostController hostController)
         {
-            var runs = launch.GetRuns();
-            var silverlightRun = runs.Values.FirstOrDefault(run => run.Value.GetSilverlightPlatformVersion() == silverlightPlatform.Version);
-
-            if (silverlightRun.Value == null)
+            try
             {
-                var runtimeEnvironment = new RuntimeEnvironment { PlatformType = PlatformType.x86, PlatformVersion = PlatformVersion.v4_0 };
+                var runs = launch.GetRuns();
+                var silverlightRun =
+                    runs.Values.FirstOrDefault(
+                        run => run.GetSilverlightPlatformVersion() == silverlightPlatform.Version);
 
-                var run = new UnitTestRun((UnitTestLaunch)launch, provider, runtimeEnvironment, runs.First().Value.Value.GetField<ISolution>("mySolution"));
-                var runStrategy = new OutOfProcessUnitTestRunStrategy(SilverlightUnitTestProvider.GetTaskRunnerInfo(launch));
+                if (silverlightRun == null)
+                {
+                    var runtimeEnvironment = new RuntimeEnvironment
+                                                 {
+                                                     PlatformType = PlatformType.x86,
+                                                     PlatformVersion = PlatformVersion.v4_0
+                                                 };
 
-                var runProperties = new UnitTestRunProperties(provider, null, runStrategy, runtimeEnvironment);
-                runProperties.RunController = hostController;
+                    var runStrategy =
+                        new OutOfProcessUnitTestRunStrategy(SilverlightUnitTestProvider.GetTaskRunnerInfo(launch));
+                    var project = runs.FirstOrDefault().Value.GetProperty<UnitTestRunProperties>("Properties").Project;
+                    var runProperties = new UnitTestRunProperties(provider, runStrategy, project, runtimeEnvironment);
+                    runProperties.EnsureLifetime(launch);
+                    silverlightRun = new UnitTestRun(runProperties, (UnitTestLaunch)launch);
 
-                silverlightRun = new KeyValuePair<UnitTestRunProperties, UnitTestRun>(runProperties, run);
+                    runs.Add(silverlightRun.Id, silverlightRun);
+                }
 
-                runs.Add(run.ID, silverlightRun);
+                return silverlightRun;
             }
-
-            return silverlightRun;
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
-        public static Dictionary<string, KeyValuePair<UnitTestRunProperties, UnitTestRun>> GetRuns(this IUnitTestLaunch launch)
+        public static Dictionary<string, UnitTestRun> GetRuns(this IUnitTestLaunch launch)
         {
-            return launch.GetField<Dictionary<string, KeyValuePair<UnitTestRunProperties, UnitTestRun>>>("myRuns");
+            return launch.GetField<Dictionary<string, UnitTestRun>>("myRuns");
         }
     }
 }

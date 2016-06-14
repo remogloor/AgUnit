@@ -33,7 +33,7 @@
             return sequence.GetAllTasksRecursive()
                 .Select(task => run.GetElementByRemoteTaskId(task.Task.Id))
                 .Where(element => element != null)
-                .Select(element => element.Id.GetProject())
+                .Select(element => element.Id.Project)
                 .FirstOrDefault(project => project != null && project.PlatformID != null && project.PlatformID.Identifier == FrameworkIdentifier.Silverlight);
         }
 
