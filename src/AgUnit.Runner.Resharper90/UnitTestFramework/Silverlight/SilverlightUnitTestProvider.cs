@@ -8,6 +8,7 @@
     using AgUnit.Runner.Resharper90.UnitTestFramework.SilverlightPlatform;
 
     using JetBrains.ProjectModel;
+    using JetBrains.PsiFeatures.VisualStudio.Core.UnitTesting;
     using JetBrains.ReSharper.Psi;
     using JetBrains.ReSharper.TaskRunnerFramework;
     using JetBrains.ReSharper.UnitTestFramework;
@@ -69,7 +70,7 @@
 
         public bool IsSupported(IHostProvider hostProvider)
         {
-            return hostProvider is HostProviderWrapper;
+            return hostProvider is HostProviderWrapper || hostProvider is DebugHostProvider;
         }
 
         public bool IsSupported(IProject project)
