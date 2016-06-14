@@ -23,8 +23,7 @@
         
         public override void ExecuteRecursive(TaskExecutionNode node)
         {
-            System.Diagnostics.Debugger.Launch();
-            System.Diagnostics.Debugger.Break();
+//            System.Diagnostics.Debugger.Launch();
 
             try
             {
